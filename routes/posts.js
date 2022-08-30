@@ -1,27 +1,44 @@
+const auth = require('../middleware/auth');
+const selfOrAdmin = require('../middleware/selfOrAdmin');
 const express = require('express');
+const mongoose = require('mongoose');
+const {User} = require('../modules/user');
+const {Post} = require('../modules/post');
+
+
+// const Joi = require('joi');
 const router = express.Router();
 
+// postSchema = new mongoose.Schema({
+//     writerId : {
+//         type: mongoose.Types.ObjectId,
+//         required: true
+//     } ,
+//     likes : [mongoose.Types.ObjectId], 
+//     title: {
+//         type: String,
+//         required: true
+//     },
+//     text: String ,
+//     date: {type : Date , default: Date.now}
+// })
+
+// const Post = mongoose.model('Post', postSchema);
 
 
-let posts = [
-    {
-        id : 1 , title : "Hello World!" , text : ":)", userId : 1
-    } , 
-    {
-        id : 2 , title : "fisrt commit" , text : ":))", UserId : 2
-    } ,
-    {
-        id : 3 , title : "nice pic" , text : "-", userId : 3
-    }
-];
 
-
-router.get('/' , (req , res) => {
+router.get('/' , async(req , res) => {
+    const posts = await Post
+    .find();
     res.send(posts);
 });
 
-router.get('/:id' , (req , res) => {
-    const post = posts.find(c => c.id === parseInt(req.params.id));
+
+router.get('/:id' , async (req , res) => {
+    const post = await Post
+    .findById(req.params.id)
+    .populate('writerId' , 'name email age')
+    
     if (!post) // 404
         return res.status(404).send('The post with the given ID was not found.');
     res.send(post);
@@ -29,57 +46,83 @@ router.get('/:id' , (req , res) => {
 });
 
 
+
 // post command
-router.post('/' , (req, res) => {
-    if(validatePost(req.body).error){ //400
-        return res.status(400).send(validatePost(req.body).error.details[0].message);
+router.post('/' , [auth , selfOrAdmin] , async (req, res) => {
+    try{
+        const post = await new Post({
+            writerId: req.user._id ,
+            title: req.body.title ,
+            text: req.body.text 
+        })
+        const result = await post.save();
+        console.log(result);
+        res.send(post);
     }
-    let post = {
-        id: posts.length + 1,
-        title: req.body.title ,
-        text: req.body.text ,
-        userId: req.body.userId
-    };
-    posts.push(post);
-    res.send(post);
+    catch(ex){
+        console.log(ex.message);
+        res.send(ex.message);
+    }    
 });
 
 
 // put command
-router.put('/:id' , (req , res) => {
-    let post = posts.find(c => c.id === parseInt(req.params.id));
-    if (!post) // 404
-        return res.status(404).send('The post with the given ID was not found.');
-    const validation = validatePost(req.body);
-    if (validation.error) // 400
-        return res.status(400).send(validation.error.details[0].message);
-    post.title = req.body.title;
-    post.text = req.body.text;
-    post.userId = req.body.userId;
-    
-    res.send(user);
+router.put('/:id' , [auth , selfOrAdmin] , async (req , res) => {
+    try{
+        const post = await Post
+            .findByIdAndUpdate(req.params.id , _.pick(req.body , ['title' , 'text']));
+        if (!post) // 404                                                                               // next step: implement it with try catch
+            return res.status(404).send('The post with the given ID was not found.');
+            const result = await post.save();
+            console.log(result);
+            res.send(post);
+    }
+    catch(ex){
+        console.log(ex.message);
+        res.send(ex.message);
+    }    
 });
+
 
 // delete command
-router.delete('/:id' , (req, res) => {
-    const post = posts.find(c => c.id === parseInt(req.params.id));
-    if (!post) {// 404
-        return res.status(404).send('The post with the given ID was not found.');
+router.delete('/:id' , [auth , selfOrAdmin] , async (req, res) => {
+    try{
+        const post = await Post.findbyIdAndRemove(req.params.id);
+        if(!post)
+            return res.status(404).send("Invalid post Id");
+        const user = await User.findById(req.user._id);
+        const postIndex = user.posts.indexof(post._id);
+        if(index != 1)
+            user.posts.splice(index , 1);
+        await user.save();
+
+        res.send("Deleted Post was: \n" + post);
     }
-    const index = posts.indexOf(post);
-    posts.splice(index, 1);
-    delete post;
-    res.send("Post deleted successfully. \n" + posts);
+    catch(ex){
+        console.log(ex.message);
+    }
+}); 
+
+
+router.delete('/DeleteAll' , auth , async (req , res) => {
+    try{
+        Post.deleteMany();
+        console.log("All likes deleted");
+    }
+    catch(ex){
+        console.log(ex.message);
+    }
 });
 
 
-function validatePost(post) {
-    const schema = Joi.object({
-        title: Joi.string().min(3).required() ,
-        text: Joi.string().min(3).required() ,
-        userId: Joi.number().min(1).required()
-    });
-    return schema.validate(post);
-};
+// async function validateData(writerId , validateType) {
+//     const user = await validateType
+//     .findById(writerId);
+
+//     if(!user)
+//         return false;
+//     return true;
+// };
 
 module.exports = router;
+module.exports.Post = Post;

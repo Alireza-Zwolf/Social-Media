@@ -1,27 +1,43 @@
 const express = require('express');
+const mongoose = require('mongoose');
+const auth = require('../middleware/auth');
+const admin = require('../middleware/admin');
+const selfOrAdmin = require('../middleware/selfOrAdmin');
 // const Joi = require('joi');
 const router = express.Router();
+const {User} = require('../modules/user');
+const {Post} = require('../modules/post');
+const {Like} = require('../modules/like');
+const _ = require('lodash')
 
 
-let likes = [
-    {
-        id : 1 , userId : 1 , postId : 1
-    } , 
-    {
-        id : 2 , userId : 1 , postId : 2        
-    } ,
-    {
-        id : 3 , userId : 2 , postId : 3
-    }
-];
 
-router.get('/' , (req , res) => {
+
+// likeSchema = new mongoose.Schema({
+//     userId : {
+//         type: mongoose.Types.ObjectId,
+//         required: true
+//     } ,
+//     postId : {
+//         type: mongoose.Types.ObjectId,
+//         required: true }, 
+//     date: {type : Date , default: Date.now}
+// })
+
+// const Like = mongoose.model('Like' , likeSchema);
+
+
+router.get('/' , auth , async(req , res) => {
+    const likes = await Like
+    .find();
     res.send(likes);
 });
 
 
-router.get('/:id' , (req , res) => {
-    const like = likes.find(c => c.id === parseInt(req.params.id));
+router.get('/:id' , auth , async (req , res) => {
+    const like = await Like
+        .findById(req.params.id);
+    
     if (!like) // 404
         return res.status(404).send('The like with the given ID was not found.');
     res.send(like);
@@ -30,54 +46,64 @@ router.get('/:id' , (req , res) => {
 
 
 // post command
-router.post('/' , (req, res) => {
-    if(validateLike(req.body).error){ //400
-        return res.status(400).send(validateLike(req.body).error.details[0].message);
+router.post('/' , auth , async (req, res) => {
+    try{
+        const user = await User.findById(req.body.userId);
+        if(!user)
+            return res.status(404).send('The user with the given ID was not found.');
+        const post = await Post.findById(req.body.postId);
+        if(!post)
+            return res.status(404).send("The post with the given ID was not found.");
+        
+        const like = await new Like({
+            userId : req.body.userId,
+            postId : req.body.postId
+        })
+        await like.save();
+        post.likes.push(like);
+        await post.save();
+
+        // res.send(_.pick(like , ['user' , 'post']));
+        res.send(like); 
     }
-    let like = {
-        id: likes.length + 1,
-        userId : req.body.userId ,
-        postId : req.body.postId
-    };
-    likes.push(like);
-    res.send(like);
+    catch(ex){
+        console.log(ex.message);
+        res.send(ex.message);
+    }
 });
 
 
-// put command
-router.put('/:id' , (req , res) => {
-    let like = likes.find(c => c.id === parseInt(req.params.id));
-    if (!like) // 404
-        return res.status(404).send('The like with the given ID was not found.');
-    const validation = validateLike(req.body);
-    if (validation.error) // 400
-        return res.status(400).send(validation.error.details[0].message);
-    like.userId = req.body.userId;
-    like.postId = req.body.postId;
-    
-    res.send(like);
-});
 
 // delete command
-router.delete('/:id' , (req, res) => {
-    const like = likes.find(c => c.id === parseInt(req.params.id));
-    if (!like) {// 404
-        return res.status(404).send('The like with the given ID was not found.');
+router.delete('/:id' , auth , async (req, res) => {
+    try{
+        const like = Like.findbyIdAndRemove(req.params.id);
+        if(!like)
+            return res.status(404).send('The like with the given ID was not found.');
+        const post = await Post.findById(like.postId);
+        const index = post.likes.indexOf(like._id);
+        if(index != -1)
+            post.likes.splice(index , 1);
+        await post.save();
+        res.send(like); 
     }
-    const index = likes.indexOf(like);
-    likes.splice(index, 1);
-    delete like;
-    res.send("like deleted successfully. \n" + likes);
+    catch(ex){
+        console.log(ex.message);
+    }
+});
+
+router.delete('/DeleteAll' , auth , async (req , res) => {
+    try{
+        Like.deleteMany({});
+        console.log("All likes deleted");
+    }
+    catch(ex){
+        console.log(ex.message);
+    }
 });
 
 
-function validateLike(like) {
-    const schema = Joi.object({
-        userId : Joi.number().required().min(1) ,
-        postId : Joi.number().required().min(1)
-    });
-    return schema.validate(post);
-};
+
 
 module.exports = router;
 

@@ -1,7 +1,7 @@
 const auth = require('../middleware/auth');
 const selfOrAdmin = require('../middleware/selfOrAdmin');
 const express = require('express');
-const mongoose = require('mongoose');
+// const mongoose = require('mongoose');
 const {User} = require('../modules/user');
 const {Post} = require('../modules/post');
 
@@ -9,25 +9,22 @@ const {Post} = require('../modules/post');
 // const Joi = require('joi');
 const router = express.Router();
 
-// postSchema = new mongoose.Schema({
-//     writerId : {
-//         type: mongoose.Types.ObjectId,
-//         required: true
-//     } ,
-//     likes : [mongoose.Types.ObjectId], 
-//     title: {
-//         type: String,
-//         required: true
-//     },
-//     text: String ,
-//     date: {type : Date , default: Date.now}
-// })
-
-// const Post = mongoose.model('Post', postSchema);
 
 
 
 router.get('/' , async(req , res) => {
+    /*
+    #swagger.tags = ['Posts']
+    #swagger.path = '/api/posts'
+    #swagger.description = 'get all posts'
+    #swagger.responses[200] = {
+        description: 'array of posts returned'
+    }
+    #swagger.responses[400] = {
+        description: 'internal server error'
+    }
+    */
+
     const posts = await Post
     .find();
     res.send(posts);
@@ -35,6 +32,21 @@ router.get('/' , async(req , res) => {
 
 
 router.get('/:id' , async (req , res) => {
+    /*
+    #swagger.tags = ['Posts']
+    #swagger.path = '/api/posts/{id}'
+    #swagger.description = 'get an specific post by id'
+    #swagger.parameters['id']
+    #swagger.responses[200] = {
+        description: 'specific post returned'
+    }
+    #swagger.responses[404] = {
+        description: 'post not found'
+    }
+    #swagger.responses[500] = {
+        description: 'internal server error'
+    }
+    */
     const post = await Post
     .findById(req.params.id)
     .populate('writerId' , 'name email age')
@@ -49,6 +61,39 @@ router.get('/:id' , async (req , res) => {
 
 // post command
 router.post('/' , [auth , selfOrAdmin] , async (req, res) => {
+    /*
+    #swagger.tags = ['Posts']
+    #swagger.path = '/api/posts'
+    #swagger.description = 'Create new post'
+    #swagger.responses[200] = {
+        description: 'post created successfully'
+    }
+    #swagger.responses[500] = {
+        description: 'internal server error'
+    }
+    #swagger.parameters['writerId'] = {
+        'in' : 'body',
+        'description' : 'The id of the writer',
+        'required' : true,
+        'type' : 'string'
+    }
+    #swagger.parameters['title'] = {
+        'in' : 'body',
+        'description' : 'The title of the post',
+        'required' : true,
+        'type' : 'string'
+    }
+    #swagger.parameters['text'] = {
+        'in' : 'body',
+        'description' : 'The text of the post',
+        'required' : false,
+        'type' : 'string'
+    }       
+    #swagger.parameters['date'] = {
+        'description' : 'The time of creating the post',
+        'required' : false,
+    }
+    */
     try{
         const post = await new Post({
             writerId: req.user._id ,
@@ -68,6 +113,42 @@ router.post('/' , [auth , selfOrAdmin] , async (req, res) => {
 
 // put command
 router.put('/:id' , [auth , selfOrAdmin] , async (req , res) => {
+    /*
+        #swagger.tags = ['Posts']
+        #swagger.path = '/api/posts/{id}'
+        #swagger.description = 'Update specific post'
+        #swagger.responses[200] = {
+            description: 'post is updated successfully'
+        }
+        #swagger.responses[404] = {
+            description: 'post not found'
+        }
+        #swagger.responses[500] = {
+            description: 'internal server error'
+        }
+        #swagger.parameters['writerId'] = {
+        'in' : 'body',
+        'description' : 'The id of the writer',
+        'required' : true,
+        'type' : 'string'
+    }
+    #swagger.parameters['title'] = {
+        'in' : 'body',
+        'description' : 'The title of the post',
+        'required' : true,
+        'type' : 'string'
+    }
+    #swagger.parameters['text'] = {
+        'in' : 'body',
+        'description' : 'The text of the post',
+        'required' : false,
+        'type' : 'string'
+    }       
+    #swagger.parameters['date'] = {
+        'description' : 'The time of creating the post',
+        'required' : false,
+    }
+    */
     try{
         const post = await Post
             .findByIdAndUpdate(req.params.id , _.pick(req.body , ['title' , 'text']));
@@ -86,6 +167,21 @@ router.put('/:id' , [auth , selfOrAdmin] , async (req , res) => {
 
 // delete command
 router.delete('/:id' , [auth , selfOrAdmin] , async (req, res) => {
+    /*
+        #swagger.tags = ['Posts']
+        #swagger.path = '/api/posts/{id}'
+        #swagger.description = 'Delete specific post'
+        swagger.parameters['id']
+        #swagger.responses[200] = {
+            description: 'post deleted successfully'
+        }
+        #swagger.responses[404] = {
+            description: 'post not found'
+        }
+        #swagger.responses[500] = {
+            description: 'internal server error'
+        }
+    */
     try{
         const post = await Post.findbyIdAndRemove(req.params.id);
         if(!post)

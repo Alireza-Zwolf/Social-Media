@@ -9,8 +9,17 @@ const users = require('./routes/users');
 const posts = require('./routes/posts');
 const likes = require('./routes/likes');
 const auth = require('./routes/auth');
+const swaggerUi = require('swagger-ui-express')
+const swaggerFile = require('./swagger_output.json')
 
-//const home = require('./');
+
+
+app.use('/doc', swaggerUi.serve, swaggerUi.setup(swaggerFile))
+
+
+
+
+
 
 if(!config.get('jwtPrivateKey')) {
     console.error('FATAL ERROR: jwtPrivateKey is not defined.');
@@ -22,7 +31,7 @@ if(!config.get('jwtPrivateKey')) {
 mongoose.connect('mongodb://localhost/social-media')
     .then(() => console.log('Connected to MongoDB...'))
     .catch(err => console.error('Could not connect to MongoDB...', err));
-
+ 
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -45,3 +54,35 @@ app.get('/' , (req , res) => {
 
 const port = process.env.PORT || 3000;
 app.listen(port , () => console.log(`listening  on port ${port}...`));
+
+
+
+
+
+// const swaggerOptions = {
+    //     swaggerDefinition: {
+    //         info: {
+    //             title: "Social Media API",
+    //             description: "Social Media API Information",
+    //             contact: {
+    //                 name: "Alireza"
+    //             },
+    //             servers: ["http://localhost:3000"]
+    //         }
+    //     },
+    //     apis: ["main.js" , "routes/users.js" , "routes/posts.js" , "routes/likes.js" , "routes/auth.js"],
+    //     tags: [
+    //         {
+    //             "name": "User",
+    //             "description": "Endpoints"
+    //         },
+    //         {
+    //             "name": "Post",
+    //             "description": "Endpoints"
+    //         },
+    //         {
+    //             "name": "Like",
+    //             "description": "Endpoints"
+    //         }  
+    //     ]
+    // }

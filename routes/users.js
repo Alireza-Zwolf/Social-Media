@@ -8,59 +8,45 @@ const mongoose = require('mongoose');
 const _ = require('lodash')
 const bcrypt = require('bcrypt');
 const {User} = require('../modules/user');
-// const Joi = require('joi');
 const router = express.Router();
-
-// userSchema = new mongoose.Schema({
-//     name: {
-//         type: String,
-//         required: true
-//     } ,
-//     username:  {
-//         type: String,
-//         required: true,
-//         unique: true
-//     } ,
-//     email: {
-//         type: String,
-//         required: true,
-//         unique: true ,
-//         minlength: 5
-//     } ,
-//     age:  {
-//         type: Number,
-//         required: true ,
-//         min: 18,                                                //check
-//         max: 100                                                //check                         
-//     } ,
-//     password: {
-//         type: String,
-//         required: true,
-//         minlength: 5,
-//         maxlength: 1024,
-//     } ,
-//     posts : [mongoose.Types.ObjectId] ,
-//     likes : [mongoose.Types.ObjectId] , 
-//     date : {type : Date , default: Date.now} ,
-//     isAdmin : Boolean
-// })
-
-// userSchema.methods.generateAuthToken = function(){
-//     const token = jwt.sign({ _id: this._id , isAdmin: this.isAdmin} , config.get('jwtPrivateKey'));
-//     return token;
-// }
-
-// const User = mongoose.model('User', userSchema);
-
 
 // get commands
 router.get('/' , async(req , res) => {
+    /*
+    #swagger.tags = ['Users']
+    #swagger.path = '/api/users'
+    #swagger.description = 'get all users'
+    #swagger.responses[200] = {
+        description: 'array of users returned'
+    }
+    #swagger.responses[500] = {
+        description: 'internal server error'
+    }
+    */
+
+    
     const users = await User
     .find();
     res.send(users);
 });
 
 router.get('/:id' , auth ,async (req , res) => {
+    /*
+    #swagger.tags = ['Users']
+    #swagger.path = '/api/users/{id}'
+    #swagger.description = 'get an specific user by id'
+    #swagger.parameters['id']
+    #swagger.responses[200] = {
+        description: 'specific user returned'
+        schema: { $ref: "#/definitions/User" }
+    }
+    #swagger.responses[404] = {
+        description: 'user not found'
+    }
+    #swagger.responses[500] = {
+        description: 'internal server error'
+    }
+    */
     const id = req.params.id;
     const user = await User
     .findById(id).select('password');
@@ -79,6 +65,47 @@ router.get('/:id' , auth ,async (req , res) => {
 
 // post command
 router.post('/' , async (req, res) => {
+    /*
+        #swagger.tags = ['Users']
+        #swagger.path = '/api/users'
+        #swagger.description = 'Create new user'
+        #swagger.responses[200] = {
+            description: 'user created successfully'
+        }
+        #swagger.responses[500] = {
+            description: 'internal server error'
+        }
+        swagger.parameters['name'] = {
+            'in': 'body',
+            'description': 'name of the user',
+            'required': true,
+            'type': 'string'
+        }
+        swagger.parameters['email'] = {
+            'in': 'body',
+            'description': 'email of the user',
+            'required': true,
+            'type': 'string'
+        }
+        swagger.parameters['password'] = {
+            'in': 'body',
+            'description': 'password of the user',
+            'required': true,
+            'type': 'string'
+        }
+        swagger.parameters['isAdmin'] = {
+            'in': 'body',
+            'description': 'isAdmin of the user',
+            'required': true,
+            'type': 'boolean'
+        }
+        swagger.parameters['age'] = {
+            'in': 'body',
+            'description': 'age of the user',
+            'required': true,
+            'type': 'number'
+        }
+    */
     try{
         let user = await User.findOne({email : req.body.email});
         if(user) return res.status(400).send('User already exists.');
@@ -113,6 +140,50 @@ router.post('/' , async (req, res) => {
 
 // put command
 router.put('/:id' , [auth , selfOrAdmin] , async (req , res) => {
+    /*
+        #swagger.tags = ['Users']
+        #swagger.path = '/api/users/{id}'
+        #swagger.description = 'Update specific user'
+        #swagger.responses[200] = {
+            description: 'user is updated successfully'
+        }
+        #swagger.responses[404] = {
+            description: 'user not found'
+        }
+        #swagger.responses[500] = {
+            description: 'internal server error'
+        }
+        swagger.parameters['name'] = {
+            'in': 'body',
+            'description': 'name of the user',
+            'required': true,
+            'type': 'string'
+        }
+        swagger.parameters['email'] = {
+            'in': 'body',
+            'description': 'email of the user',
+            'required': true,
+            'type': 'string'
+        }
+        swagger.parameters['password'] = {
+            'in': 'body',
+            'description': 'password of the user',
+            'required': true,
+            'type': 'string'
+        }
+        swagger.parameters['isAdmin'] = {
+            'in': 'body',
+            'description': 'isAdmin of the user',
+            'required': true,
+            'type': 'boolean'
+        }
+        swagger.parameters['age'] = {
+            'in': 'body',
+            'description': 'age of the user',
+            'required': true,
+            'type': 'number'
+        }
+    */
     try{
         const user = await User
             .findByIdAndUpdate(req.params.id , _pick(req.body , ['name' , 'username' ,'email' , 'phone' , 'password' , 'isAdmin']));
@@ -129,6 +200,21 @@ router.put('/:id' , [auth , selfOrAdmin] , async (req , res) => {
 
 // delete command
 router.delete('/:id' , [auth , selfOrAdmin] , (req, res) => {
+    /*
+        #swagger.tags = ['Users']
+        #swagger.path = 'api/users/{id}'
+        #swagger.description = 'Delete specific user'
+        #swagger.responses[200] = {
+            description: 'user is deleted successfully'
+        }
+        #swagger.responses[404] = {
+            description: 'user not found'
+        }
+        #swagger.responses[500] = {
+            description: 'internal server error'
+        }
+        swagger.parameters['id']
+    */
     const userId = req.params.id;
     try{
         const result = User.findbyIdAndRemove(userId);
@@ -149,7 +235,6 @@ router.delete('/DeleteAll' , auth , async (req , res) => {
         console.log(ex.message);
     }
 });
-
 
 
 

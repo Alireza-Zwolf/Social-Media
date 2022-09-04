@@ -13,21 +13,18 @@ const _ = require('lodash')
 
 
 
-// likeSchema = new mongoose.Schema({
-//     userId : {
-//         type: mongoose.Types.ObjectId,
-//         required: true
-//     } ,
-//     postId : {
-//         type: mongoose.Types.ObjectId,
-//         required: true }, 
-//     date: {type : Date , default: Date.now}
-// })
-
-// const Like = mongoose.model('Like' , likeSchema);
-
-
 router.get('/' , auth , async(req , res) => {
+    /*
+    #swagger.tags = ['Likes']
+    #swagger.path = '/api/likes'
+    #swagger.description = 'get all likes'
+    #swagger.responses[200] = {
+        description: 'array of likes returned'
+    }
+    #swagger.responses[400] = {
+        description: 'internal server error'
+    }
+    */
     const likes = await Like
     .find();
     res.send(likes);
@@ -35,6 +32,21 @@ router.get('/' , auth , async(req , res) => {
 
 
 router.get('/:id' , auth , async (req , res) => {
+    /*
+    #swagger.tags = ['Likes']
+    #swagger.path = '/api/likes/{id}'
+    #swagger.description = 'get an specific like by id'
+    #swagger.parameters['id']
+    #swagger.responses[200] = {
+        description: 'specific like returned'
+    }
+    #swagger.responses[404] = {
+        description: 'like not found'
+    }
+    #swagger.responses[500] = {
+        description: 'internal server error'
+    }
+    */
     const like = await Like
         .findById(req.params.id);
     
@@ -47,6 +59,33 @@ router.get('/:id' , auth , async (req , res) => {
 
 // post command
 router.post('/' , auth , async (req, res) => {
+    /*
+    #swagger.tags = ['Likes']
+    #swagger.path = '/api/likes'
+    #swagger.description = 'Create new like'
+    #swagger.responses[200] = {
+        description: 'like created successfully'
+    }
+    #swagger.responses[500] = {
+        description: 'internal server error'
+    }
+    #swagger.parameters['UserId'] = {
+        'in' : 'body',
+        'description' : 'The id of the liker',
+        'required' : true,
+        'type' : 'string'
+    }
+    #swagger.parameters['postId'] = {
+        'in' : 'body',
+        'description' : 'The id of the liked post',
+        'required' : true,
+        'type' : 'string'
+    }
+    #swagger.parameters['date'] = {
+        'description' : 'The time of creating the like',
+        'required' : false,
+    }
+    */
     try{
         const user = await User.findById(req.body.userId);
         if(!user)
@@ -76,6 +115,21 @@ router.post('/' , auth , async (req, res) => {
 
 // delete command
 router.delete('/:id' , auth , async (req, res) => {
+    /*
+        #swagger.tags = ['Likes']
+        #swagger.path = '/api/likes/{id}'
+        #swagger.description = 'Delete specific post'
+        swagger.parameters['id']
+        #swagger.responses[200] = {
+            description: 'like deleted successfully'
+        }
+        #swagger.responses[404] = {
+            description: 'like not found'
+        }
+        #swagger.responses[500] = {
+            description: 'internal server error'
+        }
+    */
     try{
         const like = Like.findbyIdAndRemove(req.params.id);
         if(!like)

@@ -1,7 +1,6 @@
 ﻿# Social Media
 
 This project was implemented as a course project for the ACM backend class at the University of Tehran.
-The server runs on port 3000. Port number can be changed by using `set` command on cmd.
 ## Dependencies
 * [npm package manager](https://github.com/npm/cli)
 * [MongoDB](https://www.mongodb.com/)
@@ -24,8 +23,8 @@ now run the project
 node swagger.js
 ```
 
-All HTTP methods collection can be imported from the `request collection` folder into [Postman](https://www.postman.com/).<br />
-
+* All HTTP methods collection can be imported from the `request collection` folder into [Postman](https://www.postman.com/).<br />
+* The server runs on port 3000, port number can be changed by using `set` command on cmd.
 ## Documentation
 The documentation of the project can be accessed via the address below:
 ```

@@ -1,14 +1,11 @@
 const auth = require('../middleware/auth');
-const admin = require('../middleware/admin');
 const selfOrAdmin = require('../middleware/selfOrAdmin');
-const jwt = require('jsonwebtoken');
-const config = require('config'); 
 const express = require('express');
-const mongoose = require('mongoose');
 const _ = require('lodash')
 const bcrypt = require('bcrypt');
 const {User} = require('../modules/user');
 const router = express.Router();
+
 
 // get commands
 router.get('/' , async(req , res) => {
@@ -57,12 +54,6 @@ router.get('/:id' , auth ,async (req , res) => {
     console.log(user);
 });
 
-// router.get('/me' , async (req , res) => {
-//     //const user = await User.findById(req.user._id).select('-password');
-//     //res.send(user);
-//     res.send("Hi");
-// });
-
 // post command
 router.post('/' , async (req, res) => {
     /*
@@ -108,7 +99,7 @@ router.post('/' , async (req, res) => {
     */
     try{
         let user = await User.findOne({email : req.body.email});
-        if(user) return res.status(400).send('User already exists.');
+        if(user) return res.status(400).send('User already exists. Try another email.');
         user = await new User({
             name: req.body.name,
             username: req.body.username,
@@ -125,6 +116,7 @@ router.post('/' , async (req, res) => {
         let result = await user.save();
         const salt = await bcrypt.genSalt(10);
         user.password = await bcrypt.hash(user.password, salt);
+        console.log(user.password);
         result = await user.save();
 
         // make token
@@ -185,11 +177,12 @@ router.put('/:id' , [auth , selfOrAdmin] , async (req , res) => {
         }
     */
     try{
-        const user = await User
-            .findByIdAndUpdate(req.params.id , _pick(req.body , ['name' , 'username' ,'email' , 'phone' , 'password' , 'isAdmin']));
+        console.log(req.params.id);
+        let user = await User
+            .findByIdAndUpdate(req.params.id , _.pick(req.body , ['name' , 'username' ,'email' , 'phone' , 'password' , 'isAdmin']));
         if (!user) // 404
             return res.status(404).send('The user with the given ID was not found.');
-            
+        user = await User.findById(req.params.id);
         res.send(user);
     }
     catch(ex){
@@ -199,7 +192,7 @@ router.put('/:id' , [auth , selfOrAdmin] , async (req , res) => {
 });
 
 // delete command
-router.delete('/:id' , [auth , selfOrAdmin] , (req, res) => {
+router.delete('/:id' , [auth , selfOrAdmin] , async (req, res) => {
     /*
         #swagger.tags = ['Users']
         #swagger.path = 'api/users/{id}'
@@ -217,22 +210,14 @@ router.delete('/:id' , [auth , selfOrAdmin] , (req, res) => {
     */
     const userId = req.params.id;
     try{
-        const result = User.findbyIdAndRemove(userId);
-        console.log(result);
+        const user = await User.findById(req.params.id);
+        if(!user)
+            return res.status(404).send("Invalid user Id");
+        await User.deleteOne({_id : userId});
+        res.send("User Deleted successfully\n\n" + user);
     }
     catch(ex){
-        console.log(ex.message);
-    }
-});
-
-
-router.delete('/DeleteAll' , auth , async (req , res) => {
-    try{
-        User.deleteMany();
-        console.log("All likes deleted");
-    }
-    catch(ex){
-        console.log(ex.message);
+        res.send(ex.message)
     }
 });
 

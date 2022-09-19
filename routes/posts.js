@@ -1,12 +1,9 @@
 const auth = require('../middleware/auth');
 const selfOrAdmin = require('../middleware/selfOrAdmin');
 const express = require('express');
-// const mongoose = require('mongoose');
 const {User} = require('../modules/user');
 const {Post} = require('../modules/post');
-
-
-// const Joi = require('joi');
+const _ = require('lodash')
 const router = express.Router();
 
 
@@ -60,7 +57,7 @@ router.get('/:id' , async (req , res) => {
 
 
 // post command
-router.post('/' , [auth , selfOrAdmin] , async (req, res) => {
+router.post('/' , auth , async (req, res) => {
     /*
     #swagger.tags = ['Posts']
     #swagger.path = '/api/posts'
@@ -112,7 +109,7 @@ router.post('/' , [auth , selfOrAdmin] , async (req, res) => {
 
 
 // put command
-router.put('/:id' , [auth , selfOrAdmin] , async (req , res) => {
+router.put('/:id' , auth , async (req , res) => {
     /*
         #swagger.tags = ['Posts']
         #swagger.path = '/api/posts/{id}'
@@ -150,13 +147,14 @@ router.put('/:id' , [auth , selfOrAdmin] , async (req , res) => {
     }
     */
     try{
-        const post = await Post
+        let post = await Post
             .findByIdAndUpdate(req.params.id , _.pick(req.body , ['title' , 'text']));
-        if (!post) // 404                                                                               // next step: implement it with try catch
+        if (!post) // 404                                                                               
             return res.status(404).send('The post with the given ID was not found.');
-            const result = await post.save();
-            console.log(result);
-            res.send(post);
+        if(req.user._id != post.writerId && !req.user.isAdmin)
+            return res.status(403).send('Access denied.');
+        post = await Post.findById(req.params.id);
+        res.send(post);
     }
     catch(ex){
         console.log(ex.message);
@@ -166,7 +164,7 @@ router.put('/:id' , [auth , selfOrAdmin] , async (req , res) => {
 
 
 // delete command
-router.delete('/:id' , [auth , selfOrAdmin] , async (req, res) => {
+router.delete('/:id' , auth , async (req, res) => {
     /*
         #swagger.tags = ['Posts']
         #swagger.path = '/api/posts/{id}'
@@ -183,19 +181,23 @@ router.delete('/:id' , [auth , selfOrAdmin] , async (req, res) => {
         }
     */
     try{
-        const post = await Post.findbyIdAndRemove(req.params.id);
+        const post = await Post.findById(req.params.id);
         if(!post)
             return res.status(404).send("Invalid post Id");
+        if(req.user._id != post.writerId && !req.user.isAdmin)
+            return res.status(403).send('Access denied.');
+        await Post.remove({_id: req.params.id});
         const user = await User.findById(req.user._id);
-        const postIndex = user.posts.indexof(post._id);
-        if(index != 1)
-            user.posts.splice(index , 1);
+        const postIndex = user.posts.indexOf(post._id);
+        if(postIndex != 1)
+            user.posts.splice(postIndex , 1);
         await user.save();
 
-        res.send("Deleted Post was: \n" + post);
+        res.send("Post deleted successfully.\n\n" + post);
     }
     catch(ex){
         console.log(ex.message);
+        res.send(ex.message);
     }
 }); 
 

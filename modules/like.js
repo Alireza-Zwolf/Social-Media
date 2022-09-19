@@ -8,7 +8,10 @@ likeSchema = new mongoose.Schema({
     } ,
     postId : {
         type: mongoose.Types.ObjectId,
-        required: true }, 
+        required: true } , 
+    writerId : {
+        type: mongoose.Types.ObjectId,
+        required: true } ,
     date: {type : Date , default: Date.now}
 })
 

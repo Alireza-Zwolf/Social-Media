@@ -3,7 +3,6 @@ const config = require('config');
 const express = require('express');
 const app = express();
 const helmet = require('helmet');
-const Joi = require('joi');
 const morgan = require('morgan');
 const users = require('./routes/users');
 const posts = require('./routes/posts');
@@ -11,6 +10,7 @@ const likes = require('./routes/likes');
 const auth = require('./routes/auth');
 const swaggerUi = require('swagger-ui-express')
 const swaggerFile = require('./swagger_output.json')
+
 
 
 
@@ -41,7 +41,6 @@ app.use('/api/users' , users);
 app.use('/api/posts' , posts);
 app.use('/api/likes' , likes);
 app.use('/api/auth' , auth);
-//app.use('/' , home);
 
 
 
@@ -55,34 +54,3 @@ app.get('/' , (req , res) => {
 const port = process.env.PORT || 3000;
 app.listen(port , () => console.log(`listening  on port ${port}...`));
 
-
-
-
-
-// const swaggerOptions = {
-    //     swaggerDefinition: {
-    //         info: {
-    //             title: "Social Media API",
-    //             description: "Social Media API Information",
-    //             contact: {
-    //                 name: "Alireza"
-    //             },
-    //             servers: ["http://localhost:3000"]
-    //         }
-    //     },
-    //     apis: ["main.js" , "routes/users.js" , "routes/posts.js" , "routes/likes.js" , "routes/auth.js"],
-    //     tags: [
-    //         {
-    //             "name": "User",
-    //             "description": "Endpoints"
-    //         },
-    //         {
-    //             "name": "Post",
-    //             "description": "Endpoints"
-    //         },
-    //         {
-    //             "name": "Like",
-    //             "description": "Endpoints"
-    //         }  
-    //     ]
-    // }

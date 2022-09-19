@@ -8,7 +8,15 @@ This project was implemented as a course project for the ACM backend class at th
 [MongoDB Compass](https://github.com/mongodb-js/compass)
 
 ## how to use
-First install package dependencies
+First initial npm module
+```
+npm init
+```
+then install package dependencies
 ```
 npm i express express-jwt mongoose config helmet morgan swagger-ui-express Joi bcrypt
+```
+now run the project
+```
+node swagger.js
 ```

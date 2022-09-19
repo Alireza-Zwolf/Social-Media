@@ -17,7 +17,7 @@ npm init
 ```
 then install package dependencies
 ```
-npm i -g
+npm i
 ```
 now run the project
 ```

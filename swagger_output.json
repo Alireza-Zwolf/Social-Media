@@ -3,7 +3,7 @@
   "info": {
     "version": "1.0.0",
     "title": "Social Media API Documentation",
-    "description": "Documentation for the Social Media API Coded by Alireza Arbabi, made by <b>Swagger Autogen</b>."
+    "description": "Documentation for the Social Media API, made by <b>Swagger Autogen</b>."
   },
   "host": "localhost:3000",
   "basePath": "/",

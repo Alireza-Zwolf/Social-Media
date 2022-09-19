@@ -147,17 +147,6 @@ router.delete('/:id' , auth , async (req, res) => {
     }
 });
 
-router.delete('/DeleteAll' , auth , async (req , res) => {
-    try{
-        Like.deleteMany({});
-        console.log("All likes deleted");
-    }
-    catch(ex){
-        console.log(ex.message);
-    }
-});
-
-
 
 
 module.exports = router;

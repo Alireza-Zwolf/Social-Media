@@ -213,14 +213,5 @@ router.delete('/DeleteAll' , auth , async (req , res) => {
 });
 
 
-// async function validateData(writerId , validateType) {
-//     const user = await validateType
-//     .findById(writerId);
-
-//     if(!user)
-//         return false;
-//     return true;
-// };
-
 module.exports = router;
 module.exports.Post = Post;

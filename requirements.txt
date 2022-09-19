@@ -1,0 +1,1 @@
+express express-jwt mongoose config helmet morgan swagger-ui-express Joi bcrypt

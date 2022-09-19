@@ -3,8 +3,10 @@
 This project was implemented as a course project for the ACM backend class at the University of Tehran.
 
 ## Dependencies
+* [npm package manager](https://github.com/npm/cli)
 * [MongoDB](https://www.mongodb.com/)
 * [MongoDB Compass](https://github.com/mongodb-js/compass)
+* [Mongoose](https://github.com/Automattic/mongoose)
 * [Postman](https://www.postman.com/)
 * [Swagger](https://github.com/swagger-api/swagger-ui)
 

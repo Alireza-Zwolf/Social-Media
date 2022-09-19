@@ -11,5 +11,4 @@ This project was implemented as a course project for the ACM backend class at th
 First install package dependencies
 ```
 npm i express express-jwt mongoose config helmet morgan swagger-ui-express Joi bcrypt
-
 ```

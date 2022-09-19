@@ -10,7 +10,7 @@ This project was implemented as a course project for the ACM backend class at th
 * [Swagger](https://github.com/swagger-api/swagger-ui)
 
 ## About
-A simple social media web application where clients can create an account and share their posts or like other posts.<br />
+A simple social media web application where clients can create an account and share their posts or like others' posts.<br />
 More details can be read in the documentation of the project.
 
 ## How to use

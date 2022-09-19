@@ -310,11 +310,6 @@
             "type": "string"
           },
           {
-            "name": "x-auth-token",
-            "in": "header",
-            "type": "string"
-          },
-          {
             "name": "writerId",
             "in": "body",
             "description": "The id of the writer",
@@ -356,9 +351,6 @@
           "200": {
             "description": "post is updated successfully"
           },
-          "400": {
-            "description": "Bad Request"
-          },
           "403": {
             "description": "Forbidden"
           },
@@ -381,19 +373,11 @@
             "in": "path",
             "required": true,
             "type": "string"
-          },
-          {
-            "name": "x-auth-token",
-            "in": "header",
-            "type": "string"
           }
         ],
         "responses": {
           "200": {
             "description": "post deleted successfully"
-          },
-          "400": {
-            "description": "Bad Request"
           },
           "403": {
             "description": "Forbidden"
@@ -527,6 +511,9 @@
         "responses": {
           "200": {
             "description": "like deleted successfully"
+          },
+          "403": {
+            "description": "Forbidden"
           },
           "404": {
             "description": "like not found"

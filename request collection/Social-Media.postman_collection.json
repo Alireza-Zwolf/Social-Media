@@ -1,0 +1,344 @@
+{
+	"info": {
+		"_postman_id": "b7a3d00d-7627-4052-a10e-11677c2b85b0",
+		"name": "Social-Media",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "22545062"
+	},
+	"item": [
+		{
+			"name": "Log in",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-auth-token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MzA5Zjg0MmMwNTM0YjJmMTdiNDQ2NzciLCJpYXQiOjE2NjE1OTc3NjJ9.qncIG4x7JHFwHNdtezjnGIbw-lJ9WVcbWtnylZzVp7g",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\" : \"example@gmail.com\",\r\n    \"password\" : \"12345\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/auth",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"auth"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Sign Up",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\" : \"Alireza\",\r\n    \"username\" : \"Alireza\",\r\n    \"age\" : 20,\r\n    \"password\": \"12345\",\r\n    \"email\": \"alireza2621@gmail.com\",\r\n    \"isAdmin\": \"false\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/users",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Share a post",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-auth-token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MzBkY2YyNGRmOTg0NmM1OTVjN2NkODMiLCJpc0FkbWluIjp0cnVlLCJpYXQiOjE2NjE4NDkzODB9.xf3OY-rVxAEKkU0E21Y8ZdBJXn78lMjb0tKiNuJHKKo",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\" : \"new post\",\r\n    \"text\" : \"new post info\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/posts",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"posts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Like a post",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "x-auth-token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MzI3MjNiZmJjMTYxOTUwMzUxNGE4OTAiLCJpc0FkbWluIjpmYWxzZSwiaWF0IjoxNjYzNTA5NDUzfQ.jnnkAQVIptRnX0Yxa1gWUEPylFKd76ZLrhlOvjVTxJI",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"writerId\" : \"63271ff3f96aae3a4eefa62f\",\r\n    \"postId\" : \"632721ee86f31e58b5069613\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/likes",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"likes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get all users",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/api/users",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get an specific user",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "x-auth-token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MzI2ZWQzMjg0MTVhYmQzZDk2YjY2NmYiLCJpc0FkbWluIjp0cnVlLCJpYXQiOjE2NjM1MDM2NzZ9.di3OKlFkqp2HodFwbB95vyVCBgMgtp4TW2_xfG4KFrc",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:3000/api/users/6326ed328415abd3d96b666f",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"users",
+						"6326ed328415abd3d96b666f"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Edit user",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "x-auth-token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MzBkY2YyNGRmOTg0NmM1OTVjN2NkODMiLCJpc0FkbWluIjp0cnVlLCJpYXQiOjE2NjM1MDYzMjB9.NMqjRxkg82O7i32fuN3dxztDdDVlefcd9qdsWnH1Xp0",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\" : \"Alireza\",\r\n    \"username\" : \"Alireza\",\r\n    \"age\" : 20,\r\n    \"password\": \"12345\",\r\n    \"email\": \"alireza2621@gmail.com\",\r\n    \"isAdmin\": \"false\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/users/6326ed328415abd3d96b666f",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"users",
+						"6326ed328415abd3d96b666f"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Edit a post",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "x-auth-token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MzI3MjY4ZTVhZjI0ZThiYzRhOGUwMDEiLCJpc0FkbWluIjpmYWxzZSwiaWF0IjoxNjYzNTEwMTU4fQ.BpQZ34L4v-mi0jQ1sZX77GZxQnK5pMdaLmATVQbQMbQ",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "  {\r\n  \"title\": \"new post(changed)\",\r\n  \"text\": \"new post info\"\r\n  }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/api/posts/63272c7d2eb6d27d5ea6ede2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"posts",
+						"63272c7d2eb6d27d5ea6ede2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete a user",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "x-auth-token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MzI3M2U3NTQxZjVhMTdlYWJhZjdhMGUiLCJpc0FkbWluIjpmYWxzZSwiaWF0IjoxNjYzNTE2Mjc3fQ.Xll8FuHCUqJZyQtgy0xXMG309xggBsYXchywLnZApY8",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:3000/api/users/63273e7541f5a17eabaf7a0e",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"users",
+						"63273e7541f5a17eabaf7a0e"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete a post",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "x-auth-token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MzI3MjY4ZTVhZjI0ZThiYzRhOGUwMDEiLCJpc0FkbWluIjpmYWxzZSwiaWF0IjoxNjYzNTEwMTU4fQ.BpQZ34L4v-mi0jQ1sZX77GZxQnK5pMdaLmATVQbQMbQ",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:3000/api/posts/6327394dcf1b24a59f593041",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"posts",
+						"6327394dcf1b24a59f593041"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete a like",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "x-auth-token",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MzI4M2EwYjg0ODk5NjEyMmU3NDZiMjkiLCJpc0FkbWluIjpmYWxzZSwiaWF0IjoxNjYzNTgwNjgzfQ.eTgrokUENt9YKnB8lqk7cJpVTMIA-VZMwIX_S_QlaHo",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:3000/api/likes/63283a97848996122e746b3b",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"likes",
+						"63283a97848996122e746b3b"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

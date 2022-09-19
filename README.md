@@ -9,7 +9,10 @@ This project was implemented as a course project for the ACM backend class at th
 * [Postman](https://www.postman.com/)
 * [Swagger](https://github.com/swagger-api/swagger-ui)
 
-## how to use
+## About
+A simple social media web application where clients can create an account and share their posts or like other posts. more details can be read in documentation of the project.
+
+## How to use
 First initial npm module
 ```
 npm init
@@ -25,6 +28,7 @@ node swagger.js
 
 * All HTTP methods collection can be imported from the `request collection` folder into [Postman](https://www.postman.com/).<br />
 * The server runs on port 3000, port number can be changed by using `set` command on cmd.
+
 ## Documentation
 The documentation of the project can be accessed via the address below:
 ```

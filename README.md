@@ -3,9 +3,9 @@
 This project was implemented as a course project for the ACM backend class at the University of Tehran.
 
 ## Dependencies
-* [MongoDB](https://www.mongodb.com/),
-* [Postman](https://www.postman.com/),
+* [MongoDB](https://www.mongodb.com/)
 * [MongoDB Compass](https://github.com/mongodb-js/compass)
+* [Postman](https://www.postman.com/)
 
 ## how to use
 First initial npm module

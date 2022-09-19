@@ -15,7 +15,7 @@ npm init
 ```
 then install package dependencies
 ```
-npm i express express-jwt mongoose config helmet morgan swagger-ui-express Joi bcrypt
+npm i -g
 ```
 now run the project
 ```

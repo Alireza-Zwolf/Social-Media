@@ -29,6 +29,7 @@ The documentation of the project can be accessed via the address below:
 ```
 http://localhost:3000/doc
 ```
-![Screenshot 2022-09-19 202333](https://user-images.githubusercontent.com/88896798/191060447-7c647303-e71b-46e0-8edf-bd03f77306c7.png)
+![Screenshot 2022-09-19 203119](https://user-images.githubusercontent.com/88896798/191061669-46183c18-a2b0-4ae5-b197-a473b45710c3.png)
+
 
 

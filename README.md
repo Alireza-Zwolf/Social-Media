@@ -25,7 +25,7 @@ node swagger.js
 ```
 
 you can import all HTTP methods collection from the `request collection` folder into [Postman](https://www.postman.com/) and use.
-
+The server runs on port 3000. Port number can be changed by using `set` command on cmd.
 ## Documentation
 The documentation of the project can be accessed via the address below:
 ```

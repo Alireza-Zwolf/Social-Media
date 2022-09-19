@@ -10,7 +10,8 @@ This project was implemented as a course project for the ACM backend class at th
 * [Swagger](https://github.com/swagger-api/swagger-ui)
 
 ## About
-A simple social media web application where clients can create an account and share their posts or like other posts. more details can be read in documentation of the project.
+A simple social media web application where clients can create an account and share their posts or like other posts.<br />
+More details can be read in the documentation of the project.
 
 ## How to use
 First initial npm module

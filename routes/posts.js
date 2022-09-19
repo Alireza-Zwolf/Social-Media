@@ -55,8 +55,6 @@ router.get('/:id' , async (req , res) => {
 });
 
 
-
-// post command
 router.post('/' , auth , async (req, res) => {
     /*
     #swagger.tags = ['Posts']
@@ -108,7 +106,6 @@ router.post('/' , auth , async (req, res) => {
 });
 
 
-// put command
 router.put('/:id' , auth , async (req , res) => {
     /*
         #swagger.tags = ['Posts']
@@ -163,7 +160,6 @@ router.put('/:id' , auth , async (req , res) => {
 });
 
 
-// delete command
 router.delete('/:id' , auth , async (req, res) => {
     /*
         #swagger.tags = ['Posts']
@@ -202,15 +198,6 @@ router.delete('/:id' , auth , async (req, res) => {
 }); 
 
 
-router.delete('/DeleteAll' , auth , async (req , res) => {
-    try{
-        Post.deleteMany();
-        console.log("All likes deleted");
-    }
-    catch(ex){
-        console.log(ex.message);
-    }
-});
 
 
 module.exports = router;

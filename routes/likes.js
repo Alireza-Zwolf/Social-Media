@@ -27,7 +27,6 @@ router.get('/' , auth , async(req , res) => {
     res.send(likes);
 });
 
-
 router.get('/:id' , auth , async (req , res) => {
     /*
     #swagger.tags = ['Likes']
@@ -54,7 +53,6 @@ router.get('/:id' , auth , async (req , res) => {
 });
 
 
-// post command
 router.post('/' , auth , async (req, res) => {
     /*
     #swagger.tags = ['Likes']
@@ -109,8 +107,6 @@ router.post('/' , auth , async (req, res) => {
 });
 
 
-
-// delete command
 router.delete('/:id' , auth , async (req, res) => {
     /*
         #swagger.tags = ['Likes']

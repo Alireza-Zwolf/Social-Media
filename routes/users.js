@@ -7,7 +7,6 @@ const {User} = require('../modules/user');
 const router = express.Router();
 
 
-// get commands
 router.get('/' , async(req , res) => {
     /*
     #swagger.tags = ['Users']
@@ -54,7 +53,6 @@ router.get('/:id' , auth ,async (req , res) => {
     console.log(user);
 });
 
-// post command
 router.post('/' , async (req, res) => {
     /*
         #swagger.tags = ['Users']
@@ -130,7 +128,6 @@ router.post('/' , async (req, res) => {
 });
 
 
-// put command
 router.put('/:id' , [auth , selfOrAdmin] , async (req , res) => {
     /*
         #swagger.tags = ['Users']
@@ -191,7 +188,7 @@ router.put('/:id' , [auth , selfOrAdmin] , async (req , res) => {
     }    
 });
 
-// delete command
+
 router.delete('/:id' , [auth , selfOrAdmin] , async (req, res) => {
     /*
         #swagger.tags = ['Users']

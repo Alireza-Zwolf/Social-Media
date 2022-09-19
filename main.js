@@ -26,7 +26,7 @@ if(!config.get('jwtPrivateKey')) {
     process.exit(1);
 }
 
-// console.log(config.get('jwtPrivateKey'));
+
 
 mongoose.connect('mongodb://localhost/social-media')
     .then(() => console.log('Connected to MongoDB...'))

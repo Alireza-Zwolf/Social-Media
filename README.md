@@ -22,7 +22,7 @@ now run the project
 node swagger.js
 ```
 
-you can import all HTTP methods collection from the `requirements.txt` file into [Postman](https://www.postman.com/) and use.
+you can import all HTTP methods collection from the `request collection` folder into [Postman](https://www.postman.com/) and use.
 
 ## Documentation
 The documentation of the project can be accessed via the address below:

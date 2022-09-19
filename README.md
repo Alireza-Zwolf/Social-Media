@@ -6,6 +6,7 @@ This project was implemented as a course project for the ACM backend class at th
 * [MongoDB](https://www.mongodb.com/)
 * [MongoDB Compass](https://github.com/mongodb-js/compass)
 * [Postman](https://www.postman.com/)
+* [Swagger](https://github.com/swagger-api/swagger-ui)
 
 ## how to use
 First initial npm module
